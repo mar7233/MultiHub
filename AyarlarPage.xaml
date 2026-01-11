@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MultiHubApp.Views.AyarlarPage"
+             Title="Ayarlar"
+             BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#000000}">
+
+    <VerticalStackLayout Padding="16" Spacing="16">
+
+        <!-- Header -->
+        <Label Text="Appearance"
+               FontAttributes="Bold"
+               FontSize="18"
+               TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"/>
+
+        <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
+            <Label Text="Dark Mode"
+                   TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                   VerticalOptions="Center"/>
+            <Switch x:Name="ThemeSwitch"
+                    Toggled="OnThemeToggled"/>
+        </HorizontalStackLayout>
+
+
+        <Button Text="Clear Local Data"
+                Clicked="OnClearDataClicked"
+                BackgroundColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                TextColor="{AppThemeBinding Light=#FFFFFF, Dark=#000000}"/>
+
+    </VerticalStackLayout>
+</ContentPage>

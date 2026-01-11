@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:MultiHubApp.Models"
+    x:Class="MultiHubApp.Views.YapilacaklarPage"
+    Title="Yapılacaklar">
+
+    <VerticalStackLayout Padding="12" Spacing="10">
+
+        <HorizontalStackLayout Spacing="8">
+            <Entry x:Name="NewTaskEntry" Placeholder="Yeni görev başlığı" HorizontalOptions="FillAndExpand"
+             BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#111418}"
+             TextColor="{AppThemeBinding Light=#111827, Dark=#ECEFF1}"/>
+            <Button Text="+" Clicked="OnAddClicked" WidthRequest="44" HeightRequest="44" CornerRadius="22"/>
+        </HorizontalStackLayout>
+
+        <CollectionView x:Name="TasksCollection" ItemsSource="{Binding Tasks}" SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:TaskItem">
+                    <Frame Margin="6" Padding="10" CornerRadius="8" HasShadow="False"
+                 BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#111418}"
+                 BorderColor="{AppThemeBinding Light=#E5E7EB, Dark=#222428}">
+                        <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto">
+
+                            <CheckBox Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" IsChecked="{Binding Completed}" VerticalOptions="Center"/>
+
+                            <Label Grid.Column="1" Grid.Row="0" Text="{Binding Title}" FontAttributes="Bold" FontSize="16"
+                     TextColor="{AppThemeBinding Light=#111827, Dark=#ECEFF1}" />
+
+                            <HorizontalStackLayout Grid.Column="2" Grid.Row="0" Spacing="6">
+                                <Button Text="✎" CommandParameter="{Binding}" Clicked="OnEditClicked" BackgroundColor="Transparent"/>
+                                <Button Text="🗑" CommandParameter="{Binding}" Clicked="OnDeleteClicked" BackgroundColor="Transparent" TextColor="{AppThemeBinding Light=#FF5252, Dark=#FF7A7A}"/>
+                            </HorizontalStackLayout>
+
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding Details}" FontSize="13" LineBreakMode="TailTruncation"
+                     TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}" MaxLines="2"/>
+
+                            <Label Grid.Row="1" Grid.Column="2" Text="{Binding Date, StringFormat='{0:dd MMM}'}" FontSize="12"
+                     TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}" HorizontalOptions="End"/>
+
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </VerticalStackLayout>
+</ContentPage>

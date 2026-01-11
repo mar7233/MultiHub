@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:MultiHubApp.ViewModels"
+    xmlns:helpers="clr-namespace:MultiHubApp.Helpers"
+    x:Class="MultiHubApp.Views.HaberlerPage"
+    Title="News"
+    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#000000}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <helpers:StringNotNullOrEmptyConverter x:Key="StringNotNullOrEmptyConverter" />
+
+            <!-- Category button base -->
+            <Style x:Key="CategoryButtonBase" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light=#000000, Dark=#FFFFFF}" />
+                <Setter Property="CornerRadius" Value="20" />
+                <Setter Property="Padding" Value="14,6" />
+                <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="BorderColor" Value="{AppThemeBinding Light=#000000, Dark=#FFFFFF}" />
+                <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="Shadow" Value="{x:Null}" />
+            </Style>
+
+            <!-- Selected category -->
+            <Style x:Key="CategoryButtonSelected" TargetType="Button" BasedOn="{StaticResource CategoryButtonBase}">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#000000, Dark=#FFFFFF}" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light=#FFFFFF, Dark=#000000}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+
+            <!-- News card text -->
+            <Style x:Key="NewsTitle" TargetType="Label">
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light=#000000, Dark=#FFFFFF}" />
+            </Style>
+
+            <Style x:Key="NewsSummary" TargetType="Label">
+                <Setter Property="FontSize" Value="13" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light=#444444, Dark=#CCCCCC}" />
+            </Style>
+
+            <Style x:Key="MetaLabel" TargetType="Label">
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light=#666666, Dark=#AAAAAA}" />
+            </Style>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid Padding="12" RowDefinitions="Auto,Auto,*">
+
+        <!-- Categories -->
+        <Border Grid.Row="0"
+                Stroke="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                StrokeThickness="0"
+                BackgroundColor="Transparent"
+                Padding="0,0,0,8">
+
+            <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never" HeightRequest="56">
+                <HorizontalStackLayout Spacing="8" Padding="2,6">
+                    <Button x:Name="BtnAll" Style="{StaticResource CategoryButtonBase}" Text="All" Clicked="OnAllClicked"/>
+                    <Button x:Name="BtnHeadlines" Style="{StaticResource CategoryButtonBase}" Text="Headlines" Clicked="OnCategoryClicked" CommandParameter="https://www.trthaber.com/manset_articles.rss"/>
+                    <Button x:Name="BtnBreaking" Style="{StaticResource CategoryButtonBase}" Text="Breaking" Clicked="OnCategoryClicked" CommandParameter="https://www.trthaber.com/sondakika_articles.rss"/>
+                    <Button x:Name="BtnAgenda" Style="{StaticResource CategoryButtonBase}" Text="Agenda" Clicked="OnCategoryClicked" CommandParameter="https://www.trthaber.com/gundem_articles.rss"/>
+                    <Button x:Name="BtnEconomy" Style="{StaticResource CategoryButtonBase}" Text="Economy" Clicked="OnCategoryClicked" CommandParameter="https://www.trthaber.com/ekonomi_articles.rss"/>
+                    <Button x:Name="BtnSports" Style="{StaticResource CategoryButtonBase}" Text="Sports" Clicked="OnCategoryClicked" CommandParameter="https://www.trthaber.com/spor_articles.rss"/>
+                </HorizontalStackLayout>
+            </ScrollView>
+        </Border>
+
+        <!-- Error -->
+        <Label Grid.Row="1"
+               Text="{Binding ErrorMessage}"
+               TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+               IsVisible="{Binding ErrorMessage, Converter={StaticResource StringNotNullOrEmptyConverter}}"
+               Margin="4,0"/>
+
+        <!-- News list -->
+        <RefreshView Grid.Row="2" IsRefreshing="{Binding IsBusy}" Command="{Binding RefreshCommand}">
+            <CollectionView ItemsSource="{Binding Items}" SelectionMode="Single" SelectionChanged="NewsCollection_SelectionChanged">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Margin="6"
+                               Padding="8"
+                               CornerRadius="10"
+                               HasShadow="False"
+                               BorderColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                               BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#000000}">
+
+                            <Grid ColumnDefinitions="88,*" RowDefinitions="Auto,Auto,Auto">
+
+                                <Frame Grid.RowSpan="3"
+                                       Grid.Column="0"
+                                       Padding="0"
+                                       CornerRadius="8"
+                                       HasShadow="False"
+                                       BorderColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                                       WidthRequest="82"
+                                       HeightRequest="62"
+                                       BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#000000}">
+                                    <Image Source="{Binding ImageUrl}" Aspect="AspectFill"/>
+                                </Frame>
+
+                                <Label Grid.Column="1" Text="{Binding Title}" Style="{StaticResource NewsTitle}" MaxLines="2"/>
+
+                                <Label Grid.Row="1" Grid.Column="1" Text="{Binding Summary}" Style="{StaticResource NewsSummary}" MaxLines="2" Margin="0,6,0,0"/>
+
+                                <HorizontalStackLayout Grid.Row="2" Grid.Column="1" Spacing="12" Padding="0,8,0,0">
+                                    <Label Text="{Binding Source}" Style="{StaticResource MetaLabel}"/>
+                                    <Label Text="{Binding PublishDate, StringFormat='{0:yyyy-MM-dd HH:mm}'}" Style="{StaticResource MetaLabel}"/>
+                                </HorizontalStackLayout>
+
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <CollectionView.EmptyView>
+                    <StackLayout Padding="24" HorizontalOptions="Center" VerticalOptions="Center">
+                        <Label Text="{Binding ErrorMessage, FallbackValue='No news to display.'}"
+                               HorizontalTextAlignment="Center"
+                               TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"/>
+                        <Button Text="Refresh"
+                                Command="{Binding RefreshCommand}"
+                                Margin="0,12,0,0"
+                                BackgroundColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                                TextColor="{AppThemeBinding Light=#FFFFFF, Dark=#000000}"/>
+                    </StackLayout>
+                </CollectionView.EmptyView>
+
+            </CollectionView>
+        </RefreshView>
+
+    </Grid>
+</ContentPage>

@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MultiHubApp.App">
+
+    <Application.Resources>
+        <ResourceDictionary>
+
+            <!-- Accent (static) -->
+            <Color x:Key="AccentColor">#000000</Color>
+
+            <!-- Page background -->
+            <Style TargetType="ContentPage">
+                <Setter Property="BackgroundColor"
+                        Value="{AppThemeBinding Light=#F3F4F6, Dark=#000000}" />
+            </Style>
+
+            <!-- Frames / Cards -->
+            <Style TargetType="Frame">
+                <Setter Property="BackgroundColor"
+                        Value="{AppThemeBinding Light=#FFFFFF, Dark=#0F1112}" />
+                <Setter Property="CornerRadius" Value="8" />
+                <Setter Property="HasShadow" Value="False" />
+                <Setter Property="Padding" Value="10" />
+                <Setter Property="BorderColor"
+                        Value="{AppThemeBinding Light=#E5E7EB, Dark=#222428}" />
+            </Style>
+
+            <!-- Labels -->
+            <Style TargetType="Label">
+                <Setter Property="TextColor"
+                        Value="{AppThemeBinding Light=#111827, Dark=#FFFFFF}" />
+            </Style>
+
+            <!-- Secondary text -->
+            <Style x:Key="SecondaryLabelStyle" TargetType="Label">
+                <Setter Property="TextColor"
+                        Value="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}" />
+                <Setter Property="FontSize" Value="13" />
+            </Style>
+
+            <!-- Buttons -->
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource AccentColor}" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="CornerRadius" Value="8" />
+                <Setter Property="Padding" Value="10,8" />
+            </Style>
+
+            <!-- Outline Button -->
+            <Style x:Key="OutlineButton" TargetType="Button">
+                <Setter Property="BackgroundColor"
+                        Value="{AppThemeBinding Light=#FFFFFF, Dark=#0F1112}" />
+                <Setter Property="TextColor"
+                        Value="{AppThemeBinding Light=#111827, Dark=#FFFFFF}" />
+                <Setter Property="BorderColor"
+                        Value="{AppThemeBinding Light=#E5E7EB, Dark=#222428}" />
+                <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="CornerRadius" Value="8" />
+            </Style>
+
+            <!-- Entry -->
+            <Style TargetType="Entry">
+                <Setter Property="BackgroundColor"
+                        Value="{AppThemeBinding Light=#FFFFFF, Dark=#0F1112}" />
+                <Setter Property="TextColor"
+                        Value="{AppThemeBinding Light=#111827, Dark=#FFFFFF}" />
+                <Setter Property="PlaceholderColor"
+                        Value="{AppThemeBinding Light=#9CA3AF, Dark=#6B7280}" />
+            </Style>
+
+            <!-- Editor -->
+            <Style TargetType="Editor">
+                <Setter Property="BackgroundColor"
+                        Value="{AppThemeBinding Light=#FFFFFF, Dark=#0F1112}" />
+                <Setter Property="TextColor"
+                        Value="{AppThemeBinding Light=#111827, Dark=#FFFFFF}" />
+            </Style>
+
+            <!-- Shell -->
+            <Style TargetType="Shell">
+                <Setter Property="Shell.BackgroundColor"
+                        Value="{AppThemeBinding Light=#512BD4, Dark=#111418}" />
+                <Setter Property="Shell.ForegroundColor"
+                        Value="{AppThemeBinding Light=#FFFFFF, Dark=#FFFFFF}" />
+            </Style>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

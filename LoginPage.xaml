@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MultiHubApp.Views.LoginPage"
+    Title="Giriş"
+    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#000000}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20"
+                             Padding="24"
+                             VerticalOptions="CenterAndExpand">
+
+            <Image Source="dotnet_bot.png"
+                   HeightRequest="100"
+                   HorizontalOptions="Center" />
+
+            <!-- Email -->
+            <Frame Padding="6"
+                   CornerRadius="10"
+                   HasShadow="False"
+                   BorderColor="{AppThemeBinding Light=#CCCCCC, Dark=#444444}"
+                   BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#111111}">
+                <Entry x:Name="EmailEntry"
+                       Placeholder="Email Address"
+                       Keyboard="Email"
+                       TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                       PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#AAAAAA}"
+                       BackgroundColor="Transparent"
+                       ReturnType="Next"
+                       Completed="OnEmailCompleted"/>
+            </Frame>
+
+            <!-- Password -->
+            <Frame Padding="6"
+                   CornerRadius="10"
+                   HasShadow="False"
+                   BorderColor="{AppThemeBinding Light=#CCCCCC, Dark=#444444}"
+                   BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#111111}">
+                <Entry x:Name="PasswordEntry"
+                       Placeholder="Password"
+                       IsPassword="True"
+                       TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                       PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#AAAAAA}"
+                       BackgroundColor="Transparent"
+                       ReturnType="Done"
+                       Completed="OnPasswordCompleted"/>
+            </Frame>
+
+            <!-- Login -->
+            <Button x:Name="LoginButton"
+                    Text="Login"
+                    Clicked="OnLoginClicked"
+                    BackgroundColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                    TextColor="{AppThemeBinding Light=#FFFFFF, Dark=#000000}"
+                    CornerRadius="10"
+                    HeightRequest="48"/>
+
+            <!-- Register -->
+            <Button x:Name="RegisterButton"
+                    Text="Create New Account"
+                    Clicked="OnRegisterClicked"
+                    BackgroundColor="Transparent"
+                    TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"/>
+
+            <!-- Loader -->
+            <ActivityIndicator x:Name="LoadingIndicator"
+                               IsRunning="False"
+                               IsVisible="False"
+                               Color="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                               HorizontalOptions="Center"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:MultiHubApp.Models"
+    x:Class="MultiHubApp.Views.HavaDurumuPage"
+    Title="HavaDurumu">
+
+    <CollectionView x:Name="CitiesCollection" SelectionMode="None" ItemsSource="{Binding Sehirler}">
+
+        <CollectionView.Header>
+            <VerticalStackLayout Padding="12" Spacing="8">
+                <HorizontalStackLayout Spacing="8">
+                    <Entry x:Name="CityEntry"
+                           Placeholder="Şehir ekle (Örn: Bartın)"
+                           HorizontalOptions="FillAndExpand"
+                           BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#111418}"
+                           TextColor="{AppThemeBinding Light=#111827, Dark=#ECEFF1}" />
+
+                    <Button Text="+" Clicked="OnAddCityClicked" WidthRequest="44" HeightRequest="44" CornerRadius="22" />
+                    <Button Text="⟲" Clicked="OnRefreshAllClicked" WidthRequest="44" HeightRequest="44" CornerRadius="22" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </CollectionView.Header>
+
+        <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="models:Sehir">
+                <Frame Margin="10" Padding="12" CornerRadius="10" HasShadow="False"
+                       BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#111418}"
+                       BorderColor="{AppThemeBinding Light=#E5E7EB, Dark=#222428}">
+
+                    <VerticalStackLayout Spacing="8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Text="{Binding SehirAdi}" FontSize="18" FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light=#111827, Dark=#ECEFF1}"
+                                   VerticalOptions="Center" />
+
+                            <HorizontalStackLayout Grid.Column="1" Spacing="8">
+                                <Button Text="🔄" CommandParameter="{Binding}" Clicked="OnRefreshCityClicked" BackgroundColor="Transparent"/>
+                                <Button Text="❌" CommandParameter="{Binding}" Clicked="OnRemoveCityClicked" BackgroundColor="Transparent" TextColor="#ff5252"/>
+                            </HorizontalStackLayout>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,*">
+                            <VerticalStackLayout Grid.Column="0" Spacing="6">
+                                <Label Text="Anlık Durum" FontSize="12" TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}" />
+                                <WebView Source="{Binding BugunUrl}" HeightRequest="140" Margin="0" />
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="1" Spacing="6">
+                                <Label Text="5 Günlük Tahmin" FontSize="12" TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}" />
+                                <WebView Source="{Binding BesGunUrl}" HeightRequest="140" Margin="0" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+</ContentPage>

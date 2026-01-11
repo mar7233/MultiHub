@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Shell
+    x:Class="MultiHubApp.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:MultiHubApp.Views"
+    FlyoutBehavior="Flyout"
+    Shell.FlyoutBackgroundColor="#FFFFFF"
+    Title="MultiHubApp">
+
+    <!-- Flyout header  -->
+    <Shell.FlyoutHeader>
+        <Grid Padding="16" BackgroundColor="black">
+            <Label Text="MultiHubApp" TextColor="White" FontAttributes="Bold" VerticalOptions="Center"/>
+        </Grid>
+    </Shell.FlyoutHeader>
+
+    <!-- Flyout / Side menu items -->
+    <FlyoutItem Title="Home" Route="main" Icon="home.png">
+        <ShellContent Title="Home" Route="home" ContentTemplate="{DataTemplate views:HomePage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Kurlar" Icon="currency.png">
+        <ShellContent Title="Kurlar" Route="kurlar" ContentTemplate="{DataTemplate views:KurlarPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Haberler" Icon="news.png">
+        <ShellContent Title="Haberler" Route="haberler" ContentTemplate="{DataTemplate views:HaberlerPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Hava Durumu" Icon="weather.png">
+        <ShellContent Title="HavaDurumu" Route="hava" ContentTemplate="{DataTemplate views:HavaDurumuPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Yapilacaklar" Icon="tasks.png">
+        <ShellContent Title="Yapilacaklar" Route="tasks" ContentTemplate="{DataTemplate views:YapilacaklarPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Ayarlar" Icon="settings.png">
+        <ShellContent Title="Ayarlar" Route="settings" ContentTemplate="{DataTemplate views:AyarlarPage}" />
+    </FlyoutItem>
+
+    
+    <ShellContent Title="Login" Route="login" ContentTemplate="{DataTemplate views:LoginPage}" />
+    <ShellContent Title="Register" Route="register" ContentTemplate="{DataTemplate views:RegisterPage}" />
+
+</Shell>

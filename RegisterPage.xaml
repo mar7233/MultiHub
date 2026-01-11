@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MultiHubApp.Views.RegisterPage"
+             Title="Register"
+             BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#000000}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="16"
+                             Padding="24"
+                             VerticalOptions="CenterAndExpand">
+
+            <!-- Title -->
+            <Label Text="Create Account"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"/>
+
+            <!-- Avatar -->
+            <Frame HeightRequest="120"
+                   WidthRequest="120"
+                   CornerRadius="60"
+                   HorizontalOptions="Center"
+                   HasShadow="False"
+                   Padding="0"
+                   BackgroundColor="{AppThemeBinding Light=#EEEEEE, Dark=#111111}">
+                <Grid>
+                    <Image x:Name="AvatarImage"
+                           Source="avatar_placeholder.png"
+                           Aspect="AspectFill"/>
+                    <Button x:Name="PickPhotoButton"
+                            Text="Pick Photo"
+                            Clicked="OnPickPhotoClicked"
+                            BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#000000}"
+                            TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                            HorizontalOptions="Center"
+                            VerticalOptions="End"
+                            Margin="4"
+                            Opacity="0.9"/>
+                </Grid>
+            </Frame>
+
+            <!-- Fields -->
+            <Entry x:Name="FirstNameEntry"
+                   Placeholder="First Name"
+                   ReturnType="Next"
+                   TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                   PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#AAAAAA}"
+                   BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#111111}"/>
+
+            <Entry x:Name="LastNameEntry"
+                   Placeholder="Last Name"
+                   ReturnType="Next"
+                   TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                   PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#AAAAAA}"
+                   BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#111111}"/>
+
+            <Entry x:Name="StudentNumberEntry"
+                   Placeholder="Student Number"
+                   Keyboard="Numeric"
+                   ReturnType="Next"
+                   TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                   PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#AAAAAA}"
+                   BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#111111}"/>
+
+            <!-- Email -->
+            <Frame Padding="6"
+                   CornerRadius="10"
+                   HasShadow="False"
+                   BorderColor="{AppThemeBinding Light=#CCCCCC, Dark=#444444}"
+                   BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#111111}">
+                <Entry x:Name="EmailEntry"
+                       Placeholder="Email Address"
+                       Keyboard="Email"
+                       ReturnType="Next"
+                       TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                       PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#AAAAAA}"
+                       BackgroundColor="Transparent"/>
+            </Frame>
+
+            <!-- Password -->
+            <Frame Padding="6"
+                   CornerRadius="10"
+                   HasShadow="False"
+                   BorderColor="{AppThemeBinding Light=#CCCCCC, Dark=#444444}"
+                   BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#111111}">
+                <Entry x:Name="PasswordEntry"
+                       Placeholder="Password"
+                       IsPassword="True"
+                       ReturnType="Next"
+                       TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                       PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#AAAAAA}"
+                       BackgroundColor="Transparent"/>
+            </Frame>
+
+            <!-- Confirm Password -->
+            <Frame Padding="6"
+                   CornerRadius="10"
+                   HasShadow="False"
+                   BorderColor="{AppThemeBinding Light=#CCCCCC, Dark=#444444}"
+                   BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#111111}">
+                <Entry x:Name="ConfirmPasswordEntry"
+                       Placeholder="Confirm Password"
+                       IsPassword="True"
+                       ReturnType="Done"
+                       TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                       PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#AAAAAA}"
+                       BackgroundColor="Transparent"/>
+            </Frame>
+
+            <!-- Register -->
+            <Button x:Name="RegisterButton"
+                    Text="Register"
+                    Clicked="OnRegisterClicked"
+                    BackgroundColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                    TextColor="{AppThemeBinding Light=#FFFFFF, Dark=#000000}"
+                    CornerRadius="10"
+                    HeightRequest="48"/>
+
+            <!-- Loader -->
+            <ActivityIndicator x:Name="LoadingIndicator"
+                               IsRunning="False"
+                               IsVisible="False"
+                               Color="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                               HorizontalOptions="Center"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

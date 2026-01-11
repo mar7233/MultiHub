@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodels="clr-namespace:MultiHubApp.ViewModels"
+    xmlns:helpers="clr-namespace:MultiHubApp.Helpers"
+    x:Class="MultiHubApp.Views.KurlarPage"
+    Title="Current Rates"
+    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#000000}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <helpers:NumberFormatConverter x:Key="NumberFormatConverter" />
+            <helpers:ChangeToStringConverter x:Key="ChangeToStringConverter" />
+            <helpers:ChangeToColorConverter x:Key="ChangeToColorConverter" />
+            <helpers:DirectionToBoolConverter x:Key="DirectionToBoolConverter" />
+            <helpers:IsSeparatorConverter x:Key="IsSeparatorConverter" />
+
+            <!-- Currency name -->
+            <Style x:Key="CurrencyLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="{AppThemeBinding Light=#000000, Dark=#FFFFFF}" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+
+            <!-- Small muted text -->
+            <Style x:Key="SmallLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="{AppThemeBinding Light=#444444, Dark=#BBBBBB}" />
+                <Setter Property="FontSize" Value="12" />
+            </Style>
+
+            <!-- Numbers -->
+            <Style x:Key="ValueLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="{AppThemeBinding Light=#000000, Dark=#FFFFFF}" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="HorizontalTextAlignment" Value="End" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.BindingContext>
+        <viewmodels:KurlarViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid Padding="12" RowDefinitions="Auto,*">
+
+        <!-- Header -->
+        <StackLayout Orientation="Horizontal" Spacing="12" Padding="0,0,0,8">
+            <Label Text="Rates"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   VerticalOptions="Center"
+                   TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}" />
+            <Button Text="⟳"
+                    BackgroundColor="Transparent"
+                    TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                    VerticalOptions="Center"
+                    Command="{Binding RefreshCommand}" />
+        </StackLayout>
+
+        <!-- Content -->
+        <RefreshView Grid.Row="1" IsRefreshing="{Binding IsBusy}" Command="{Binding RefreshCommand}">
+            <CollectionView ItemsSource="{Binding Rates}" SelectionMode="None">
+
+                <CollectionView.Header>
+                    <Grid Padding="6" ColumnDefinitions="2*,120,120,90">
+                        <Label Text="Currency" FontAttributes="Bold" TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}" Grid.Column="0" />
+                        <Label Text="Buy" FontAttributes="Bold" TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}" Grid.Column="1" HorizontalOptions="End"/>
+                        <Label Text="Sell" FontAttributes="Bold" TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}" Grid.Column="2" HorizontalOptions="End"/>
+                        <Label Text="Change" FontAttributes="Bold" TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}" Grid.Column="3" HorizontalOptions="End"/>
+                    </Grid>
+                </CollectionView.Header>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+
+                            <!-- Separator -->
+                            <StackLayout IsVisible="{Binding Code, Converter={StaticResource IsSeparatorConverter}}" Padding="0,8">
+                                <BoxView HeightRequest="1"
+                                         Color="{AppThemeBinding Light=#DDDDDD, Dark=#333333}" />
+                            </StackLayout>
+
+                            <!-- Currency row -->
+                            <Frame IsVisible="{Binding Code, Converter={StaticResource IsSeparatorConverter}, ConverterParameter=invert}"
+                                   Margin="0,6"
+                                   Padding="8"
+                                   CornerRadius="8"
+                                   HasShadow="False"
+                                   BorderColor="{AppThemeBinding Light=#DDDDDD, Dark=#333333}"
+                                   BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#111111}">
+
+                                <Grid ColumnDefinitions="2*,120,120,90" VerticalOptions="Center">
+
+                                    <StackLayout Grid.Column="0" Spacing="2">
+                                        <Label Text="{Binding NameOrCode}" Style="{StaticResource CurrencyLabel}" />
+                                        <Label Text="{Binding Code}" Style="{StaticResource SmallLabel}" />
+                                    </StackLayout>
+
+                                    <Label Grid.Column="1"
+                                           Style="{StaticResource ValueLabel}"
+                                           Text="{Binding Buying, Converter={StaticResource NumberFormatConverter}, ConverterParameter=auto}" />
+
+                                    <Label Grid.Column="2"
+                                           Style="{StaticResource ValueLabel}"
+                                           Text="{Binding Selling, Converter={StaticResource NumberFormatConverter}, ConverterParameter=auto}" />
+
+                                    <StackLayout Grid.Column="3" Orientation="Horizontal" Spacing="6" HorizontalOptions="End">
+                                        <Label Text="{Binding Change, Converter={StaticResource ChangeToStringConverter}}"
+                                               TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}" />
+
+                                        <Label Text="▲"
+                                               TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                                               IsVisible="{Binding Direction, Converter={StaticResource DirectionToBoolConverter}, ConverterParameter=up}" />
+
+                                        <Label Text="▼"
+                                               TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                                               IsVisible="{Binding Direction, Converter={StaticResource DirectionToBoolConverter}, ConverterParameter=down}" />
+                                    </StackLayout>
+
+                                </Grid>
+                            </Frame>
+
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <CollectionView.EmptyView>
+                    <StackLayout Padding="24" HorizontalOptions="Center" VerticalOptions="Center">
+                        <Label Text="{Binding ErrorMessage, FallbackValue='No data to display.'}"
+                               HorizontalTextAlignment="Center"
+                               TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"/>
+                        <Button Text="Refresh"
+                                Command="{Binding RefreshCommand}"
+                                Margin="0,12,0,0"
+                                BackgroundColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                                TextColor="{AppThemeBinding Light=#FFFFFF, Dark=#000000}" />
+                    </StackLayout>
+                </CollectionView.EmptyView>
+
+            </CollectionView>
+        </RefreshView>
+
+        <!-- Loading -->
+        <ActivityIndicator IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           Color="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+
+    </Grid>
+</ContentPage>

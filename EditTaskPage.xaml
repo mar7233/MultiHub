@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MultiHubApp.Views.EditTaskPage"
+    Title="Edit Task"
+    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#000000}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="12" Spacing="10">
+
+            <Entry Text="{Binding Task.Title}"
+                   Placeholder="Title"
+                   BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#000000}"
+                   TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                   PlaceholderColor="{AppThemeBinding Light=#555555, Dark=#AAAAAA}" />
+
+            <Editor Text="{Binding Task.Details}"
+                    Placeholder="Details"
+                    HeightRequest="120"
+                    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#000000}"
+                    TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                    PlaceholderColor="{AppThemeBinding Light=#555555, Dark=#AAAAAA}" />
+
+            <DatePicker Date="{Binding Task.Date}"
+                        TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                        BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#000000}" />
+
+            <Entry Text="{Binding Task.Time}"
+                   Placeholder="Time (e.g. 14:30)"
+                   BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#000000}"
+                   TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                   PlaceholderColor="{AppThemeBinding Light=#555555, Dark=#AAAAAA}" />
+
+            <HorizontalStackLayout Spacing="8">
+
+                <!-- Save -->
+                <Button Text="Save"
+                        Command="{Binding SaveCommand}"
+                        BackgroundColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                        TextColor="{AppThemeBinding Light=#FFFFFF, Dark=#000000}" />
+
+                <!-- Delete -->
+                <Button Text="Delete"
+                        Command="{Binding DeleteCommand}"
+                        BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#000000}"
+                        TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                        BorderColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                        BorderWidth="1"/>
+
+            </HorizontalStackLayout>
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"
+                               Color="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                               HorizontalOptions="Center"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

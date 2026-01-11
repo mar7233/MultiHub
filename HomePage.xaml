@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MultiHubApp.Views.HomePage"
+    Title="Home"
+    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#000000}">
+
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Spacing="14"
+                                 Padding="24"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="CenterAndExpand">
+
+                <!-- Profile image -->
+                <Frame HeightRequest="160"
+                       WidthRequest="160"
+                       CornerRadius="80"
+                       HasShadow="False"
+                       Padding="0"
+                       BackgroundColor="{AppThemeBinding Light=#EEEEEE, Dark=#1A1A1A}"
+                       HorizontalOptions="Center">
+                    <Image x:Name="ProfileImage"
+                           Source="avatar_placeholder.png"
+                           Aspect="AspectFill"/>
+                </Frame>
+
+                <!-- Titles -->
+                <Label x:Name="TitleLabel"
+                       Text="ÖDEV-3"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"/>
+
+                <Label x:Name="NameLabel"
+                       Text="ADI SOYADI"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"/>
+
+                <Label x:Name="StudentNumberLabel"
+                       Text="NUMARA"
+                       FontSize="18"
+                       HorizontalOptions="Center"
+                       TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"/>
+
+                <Label x:Name="DeptLabel"
+                       Text="Bartın Üniversitesi Bilgisayar Mühendisliği Bölümü"
+                       FontSize="12"
+                       HorizontalOptions="Center"
+                       TextColor="{AppThemeBinding Light=#444444, Dark=#BBBBBB}"/>
+
+                <!-- Warning box (using Border instead of Frame) -->
+                <Border Stroke="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                        StrokeThickness="1"
+                        BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1A1A1A}"
+                        StrokeShape="RoundRectangle 6"
+                        Padding="8"
+                        Margin="0,8,0,0">
+                    <Label Text="DİKKAT: Ödevinizi çalışır halde yükleyin."
+                           FontSize="13"
+                           TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"/>
+                </Border>
+
+                <!-- Logout button -->
+                <Button Text="Logout"
+                        Clicked="OnLogoutClicked"
+                        BackgroundColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                        TextColor="{AppThemeBinding Light=#FFFFFF, Dark=#000000}"
+                        CornerRadius="8"
+                        HorizontalOptions="Center"
+                        WidthRequest="180"
+                        Margin="0,12,0,0"/>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>
