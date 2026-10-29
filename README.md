@@ -14,7 +14,9 @@ A cross-platform mobile app built with **.NET MAUI** that brings live exchange r
 |---|---|
 | ![Login screen](docs/screenshots/login.png) | ![Exchange rates](docs/screenshots/rates.png) |
 
-![News feed](docs/screenshots/news.png)
+| News | Tasks |
+|---|---|
+| ![News feed](docs/screenshots/news.png) | ![Task list](docs/screenshots/tasks.png) |
 
 ## Features
 

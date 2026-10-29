@@ -97,6 +97,7 @@ namespace MultiHubApp.Services
                 SecureStorage.Remove("fb_id_token");
                 SecureStorage.Remove("fb_refresh_token");
                 SecureStorage.Remove("fb_user_id");
+                SecureStorage.Remove("fb_token_expiry");
             }
             catch
             {
@@ -108,9 +109,15 @@ namespace MultiHubApp.Services
         // Geçerli idToken al. Yoksa refreshToken ile yenilemeye çalış.
         public async Task<string> GetIdTokenAsync()
         {
+            // ID tokens expire after about an hour, so only reuse one that is still valid.
             var token = await SecureStorage.GetAsync("fb_id_token");
-            if (!string.IsNullOrEmpty(token))
+            var expiryText = await SecureStorage.GetAsync("fb_token_expiry");
+            if (!string.IsNullOrEmpty(token) &&
+                long.TryParse(expiryText, out var expiryUnix) &&
+                DateTimeOffset.UtcNow.ToUnixTimeSeconds() < expiryUnix)
+            {
                 return token;
+            }
 
             var refresh = await SecureStorage.GetAsync("fb_refresh_token");
             if (string.IsNullOrEmpty(refresh))
@@ -137,6 +144,9 @@ namespace MultiHubApp.Services
                 if (!string.IsNullOrEmpty(uid))
                     await SecureStorage.SetAsync("fb_user_id", uid);
 
+                var expiresIn = doc.RootElement.TryGetProperty("expires_in", out var expEl) ? expEl.GetString() : null;
+                await SaveExpiryAsync(expiresIn);
+
                 return newToken;
             }
 
@@ -158,11 +168,20 @@ namespace MultiHubApp.Services
                 await SecureStorage.SetAsync("fb_id_token", auth.idToken ?? string.Empty);
                 await SecureStorage.SetAsync("fb_refresh_token", auth.refreshToken ?? string.Empty);
                 await SecureStorage.SetAsync("fb_user_id", auth.localId ?? string.Empty);
+                await SaveExpiryAsync(auth.expiresIn);
             }
             catch
             {
                 // SecureStorage yazma hatası: loglama eklenebilir
             }
+        }
+
+        // Stores when the current ID token stops being valid (one minute early, to be safe).
+        private static async Task SaveExpiryAsync(string? expiresIn)
+        {
+            var seconds = long.TryParse(expiresIn, out var s) ? s : 3600;
+            var expiry = DateTimeOffset.UtcNow.ToUnixTimeSeconds() + seconds - 60;
+            await SecureStorage.SetAsync("fb_token_expiry", expiry.ToString());
         }
 
         // Firebase hata mesajını parse eder, okunabilir hale getirir

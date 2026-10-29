@@ -28,7 +28,22 @@ namespace MultiHubApp.Views
         // Yeni görev eklemek için düzenleme sayfasını açar.
         private async void OnAddClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new EditTaskPage());
+            // Carry over a title typed in the quick-add box, if any.
+            var title = NewTaskEntry.Text?.Trim();
+            if (string.IsNullOrEmpty(title))
+            {
+                await Navigation.PushAsync(new EditTaskPage());
+                return;
+            }
+
+            NewTaskEntry.Text = string.Empty;
+            await Navigation.PushAsync(new EditTaskPage(new TaskItem
+            {
+                Title = title,
+                Details = string.Empty,
+                Date = DateTime.Today,
+                Time = DateTime.Now.ToString("HH:mm")
+            }));
         }
 
         // Seçili görevi düzenlemek için ilgili verilerle sayfayı açar.
@@ -75,6 +90,9 @@ namespace MultiHubApp.Views
         {
             if (sender is CheckBox cb && cb.BindingContext is TaskItem item)
             {
+                // The binding also raises this event when the list loads; only save real changes.
+                if (item.Completed == e.Value) return;
+
                 try
                 {
                     item.Completed = e.Value; // Yeni durum atanıyor.

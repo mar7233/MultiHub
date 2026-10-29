@@ -27,6 +27,7 @@ namespace MultiHubApp.Views
                 {
                     NameLabel.Text = $"{profile.FirstName} {profile.LastName}";
                     StudentNumberLabel.Text = profile.StudentNumber ?? "";
+                    StudentNumberLabel.IsVisible = !string.IsNullOrWhiteSpace(profile.StudentNumber);
                     DeptLabel.Text = profile.GetType().GetProperty("Department")?.GetValue(profile) as string
                                      ?? "Bartın Üniversitesi Bilgisayar Mühendisliği Bölümü";
 
@@ -42,8 +43,9 @@ namespace MultiHubApp.Views
                 else
                 {
                     
-                    NameLabel.Text = "ADI SOYADI";
-                    StudentNumberLabel.Text = "NUMARA";
+                    NameLabel.Text = "";
+                    StudentNumberLabel.Text = "";
+                    StudentNumberLabel.IsVisible = false;
                     DeptLabel.Text = "Bartın Üniversitesi Bilgisayar Mühendisliği Bölümü";
                     ProfileImage.Source = "avatar_placeholder.png";
                 }

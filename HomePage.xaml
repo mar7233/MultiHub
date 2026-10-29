@@ -28,21 +28,22 @@
 
                 <!-- Titles -->
                 <Label x:Name="TitleLabel"
-                       Text="ÖDEV-3"
+                       Text="Welcome to MultiHub"
                        FontSize="20"
                        FontAttributes="Bold"
                        HorizontalOptions="Center"
                        TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"/>
 
                 <Label x:Name="NameLabel"
-                       Text="ADI SOYADI"
+                       Text=""
                        FontSize="20"
                        FontAttributes="Bold"
                        HorizontalOptions="Center"
                        TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"/>
 
                 <Label x:Name="StudentNumberLabel"
-                       Text="NUMARA"
+                       Text=""
+                       IsVisible="False"
                        FontSize="18"
                        HorizontalOptions="Center"
                        TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"/>
@@ -53,14 +54,15 @@
                        HorizontalOptions="Center"
                        TextColor="{AppThemeBinding Light=#444444, Dark=#BBBBBB}"/>
 
-                <!-- Warning box (using Border instead of Frame) -->
+                <!-- Short app description -->
                 <Border Stroke="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
                         StrokeThickness="1"
                         BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1A1A1A}"
                         StrokeShape="RoundRectangle 6"
                         Padding="8"
                         Margin="0,8,0,0">
-                    <Label Text="DİKKAT: Ödevinizi çalışır halde yükleyin."
+                    <Label Text="Exchange rates, news, weather and your to-do list in one place. Open the menu to get started."
+                           HorizontalTextAlignment="Center"
                            FontSize="13"
                            TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"/>
                 </Border>
