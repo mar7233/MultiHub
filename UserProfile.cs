@@ -1,4 +1,4 @@
-namespace MultiHubApp.Models
+ï»¿namespace MultiHubApp.Models
 {
     public class UserProfile
     {
@@ -11,6 +11,6 @@ namespace MultiHubApp.Models
         public DateTime CreatedAt { get; set; }
 
       
-        public string? Department { get; set; } = "Bart?n Üniversitesi Bilgisayar Mühendisli?i Bölümü";
+        public string? Department { get; set; } = "BartÄ±n Ãœniversitesi Bilgisayar MÃ¼hendisliÄŸi BÃ¶lÃ¼mÃ¼";
     }
 }

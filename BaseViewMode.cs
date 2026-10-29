@@ -1,10 +1,10 @@
-// name=ViewModels/BaseViewModel.cs
+ï»¿// name=ViewModels/BaseViewModel.cs
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace MultiHubApp.ViewModels
 {
-    // Basit BaseViewModel (Türkçe yorum).
+    // Basit BaseViewModel (TÃ¼rkÃ§e yorum).
     public class BaseViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -8,7 +8,7 @@ using MultiHubApp.Services;
 
 namespace MultiHubApp.ViewModels
 {
-    // Yapilacaklar listesi i�in ViewModel.
+    // Yapilacaklar listesi için ViewModel.
     public class TasksViewModel : BaseViewModel
     {
         private readonly TaskService _taskService = new TaskService();

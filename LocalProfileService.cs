@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -7,8 +7,8 @@ using MultiHubApp.Models;
 
 namespace MultiHubApp.Services
 {
-    // Kullan?c? profilini yerel olarak JSON format?nda kaydeden/okuyan servis.
-    // Foto?raf dosyalar? FileSystem.AppDataDirectory i�ine kaydedilir.
+    // Kullanıcı profilini yerel olarak JSON formatında kaydeden/okuyan servis.
+    // Fotoğraf dosyaları FileSystem.AppDataDirectory içine kaydedilir.
     public class LocalProfileService
     {
         private string ProfileFilePath => Path.Combine(FileSystem.AppDataDirectory, "userprofile.json");
@@ -23,12 +23,12 @@ namespace MultiHubApp.Services
             }
             catch
             {
-                // Hata durumunda uygulaman?n ��kmesini �nlemek i�in yutuyoruz.
+                // Hata durumunda uygulamanın çökmesini önlemek için yutuyoruz.
                 // Gerekirse logging ekleyebilirsin.
             }
         }
 
-        // Profili y�kle (yoksa null d�ner)
+        // Profili yükle (yoksa null döner)
         public async Task<UserProfile> LoadProfileAsync()
         {
             try
@@ -43,7 +43,7 @@ namespace MultiHubApp.Services
             }
         }
 
-        // Foto?raf? uygulama dizinine kaydet ve d�n�len yolu ver
+        // Fotoğrafı uygulama dizinine kaydet ve dönülen yolu ver
         public async Task<string> SavePhotoAsync(string fileName, System.IO.Stream sourceStream)
         {
             try
@@ -51,7 +51,7 @@ namespace MultiHubApp.Services
                 var safeName = SanitizeFileName(fileName);
                 var destPath = Path.Combine(FileSystem.AppDataDirectory, safeName);
 
-                // E?er ayn? isimde dosya varsa �zerine yaz
+                // Eğer aynı isimde dosya varsa üzerine yaz
                 using var dest = File.OpenWrite(destPath);
                 await sourceStream.CopyToAsync(dest);
                 await dest.FlushAsync();

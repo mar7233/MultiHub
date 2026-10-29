@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
@@ -56,7 +56,7 @@ namespace MultiHubApp.ViewModels
                 var uid = await _auth.GetUserIdAsync();
                 if (string.IsNullOrEmpty(uid))
                 {
-                    await Application.Current.MainPage.DisplayAlert("Hata", "Kullan?c? giri?li de?il.", "OK");
+                    await Application.Current.MainPage.DisplayAlert("Hata", "Kullanıcı girişli değil.", "OK");
                     return;
                 }
 
@@ -94,13 +94,13 @@ namespace MultiHubApp.ViewModels
             IsBusy = true;
             try
             {
-                var confirm = await Application.Current.MainPage.DisplayAlert("Sil", "Bu g�rev silinsin mi?", "Evet", "Hay?r");
+                var confirm = await Application.Current.MainPage.DisplayAlert("Sil", "Bu görev silinsin mi?", "Evet", "Hayır");
                 if (!confirm) return;
 
                 var uid = await _auth.GetUserIdAsync();
                 if (string.IsNullOrEmpty(uid))
                 {
-                    await Application.Current.MainPage.DisplayAlert("Hata", "Kullan?c? giri?li de?il.", "OK");
+                    await Application.Current.MainPage.DisplayAlert("Hata", "Kullanıcı girişli değil.", "OK");
                     return;
                 }
 

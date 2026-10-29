@@ -1,8 +1,8 @@
-using System;
+﻿using System;
 
 namespace MultiHubApp.Models
 {
-    // Task (G�rev) modeli.
+    // Task (Görev) modeli.
     public class TaskItem
     {
         public string? Id { get; set; }

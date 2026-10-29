@@ -8,6 +8,10 @@ A cross-platform mobile app built with **.NET MAUI** that brings live exchange r
 ![Android](https://img.shields.io/badge/Android-3DDC84?logo=android&logoColor=white)
 ![iOS](https://img.shields.io/badge/iOS-000000?logo=apple&logoColor=white)
 
+## Screenshots
+
+![Login screen](docs/screenshots/login.png)
+
 ## Features
 
 | Module | What it does | Data source |
@@ -29,14 +33,15 @@ A cross-platform mobile app built with **.NET MAUI** that brings live exchange r
 
 ## Run
 
-Requirements: .NET 8 SDK with the MAUI workload.
+Requirements: .NET 10 SDK with the MAUI workload (included in Visual Studio's ".NET Multi-platform App UI development" workload).
 
 ```bash
 dotnet workload install maui
-dotnet build -t:Run -f net8.0-android
+dotnet build -t:Run -f net10.0-windows10.0.19041.0   # Windows
+dotnet build -t:Run -f net10.0-android               # Android
 ```
 
-Targets Android, iOS, Mac Catalyst and Windows.
+On Windows, turn on Developer Mode (Settings → System → For developers) to run the app from Visual Studio.
 
 ---
 

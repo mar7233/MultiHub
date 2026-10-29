@@ -1,8 +1,8 @@
-using System;
+﻿using System;
 
 namespace MultiHubApp.Models
 {
-    // Haber maddesi modeli (g�ncellendi)
+    // Haber maddesi modeli (güncellendi)
     public class NewsItem
     {
         public string Title { get; set; } = string.Empty;

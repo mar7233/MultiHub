@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
@@ -8,17 +8,17 @@ using MultiHubApp.Models;
 
 namespace MultiHubApp.Services
 {
-    // Firebase Realtime Database i�in REST tabanl? Task servisi.
+    // Firebase Realtime Database için REST tabanlı Task servisi.
     public class TaskService
     {
-        // DB URL: Mariam'?n verdi?i realtime database URL
+        // DB URL: Mariam'ın verdiği realtime database URL
         private const string BaseUrl = "https://multihubapp-default-rtdb.firebaseio.com";
         private readonly HttpClient _http = new HttpClient();
         private readonly AuthServiceRest _authService = new AuthServiceRest();
 
         private string AuthQuery(string token) => string.IsNullOrEmpty(token) ? "" : $"?auth={token}";
 
-        // Kullan?c?n?n g�revlerini al
+        // Kullanıcının görevlerini al
         public async Task<List<TaskItem>> GetTasksAsync(string userId)
         {
             var list = new List<TaskItem>();
@@ -40,12 +40,12 @@ namespace MultiHubApp.Services
             }
             catch
             {
-                // Hata yutuluyor; UI taraf?nda kullan?c?ya g�sterilecek
+                // Hata yutuluyor; UI tarafında kullanıcıya gösterilecek
             }
             return list;
         }
 
-        // G�rev ekle
+        // Görev ekle
         public async Task<string?> AddTaskAsync(TaskItem task)
         {
             try
@@ -63,7 +63,7 @@ namespace MultiHubApp.Services
             return null;
         }
 
-        // G�rev g�ncelle
+        // Görev güncelle
         public async Task UpdateTaskAsync(TaskItem task)
         {
             try
@@ -77,7 +77,7 @@ namespace MultiHubApp.Services
             catch { }
         }
 
-        // G�rev sil
+        // Görev sil
         public async Task DeleteTaskAsync(string userId, string taskId)
         {
             try
