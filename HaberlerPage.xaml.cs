@@ -113,9 +113,9 @@ namespace MultiHubApp.Views
             try
             {
                 // Önceki seçili butonun stilini normale döndürür.
-                if (_selectedCategoryButton != null && Resources.ContainsKey("CategoryButton"))
+                if (_selectedCategoryButton != null && Resources.ContainsKey("CategoryButtonBase"))
                 {
-                    _selectedCategoryButton.Style = (Style)Resources["CategoryButton"];
+                    _selectedCategoryButton.Style = (Style)Resources["CategoryButtonBase"];
                 }
 
                 // Yeni seçilen butona "Seçili" (Selected) stilini uygular.

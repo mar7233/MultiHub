@@ -2,96 +2,92 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text.Json;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using MultiHubApp.Models;
 
 namespace MultiHubApp.Services
 {
-    // RSS -> JSON using rss2json API (your original approach),
+    // Reads RSS feeds directly and parses them with LINQ to XML,
     // with helpers for image extraction and multi-feed merging.
     public class NewsService
     {
-        private readonly HttpClient _http = new();
+        private static readonly XNamespace Media = "http://search.yahoo.com/mrss/";
 
-        private const string Rss2JsonEndpoint = "https://api.rss2json.com/v1/api.json?rss_url=";
+        private readonly HttpClient _http;
 
-        // Parse single RSS (via rss2json) to list of NewsItem
+        public NewsService()
+        {
+            _http = new HttpClient { Timeout = TimeSpan.FromSeconds(15) };
+            _http.DefaultRequestHeaders.UserAgent.ParseAdd("MultiHubApp/1.0");
+        }
+
+        // Parse a single RSS feed into a list of NewsItem
         public async Task<List<NewsItem>> GetNewsFromRssAsync(string rssUrl)
         {
             var list = new List<NewsItem>();
             try
             {
-                var url = Rss2JsonEndpoint + Uri.EscapeDataString(rssUrl);
-                var res = await _http.GetAsync(url);
+                using var res = await _http.GetAsync(rssUrl);
                 if (!res.IsSuccessStatusCode) return list;
 
-                var body = await res.Content.ReadAsStringAsync();
-                using var doc = JsonDocument.Parse(body);
-                var root = doc.RootElement;
+                // Read raw bytes: some feeds send a malformed charset header,
+                // and the XML declaration already names the encoding.
+                await using var stream = await res.Content.ReadAsStreamAsync();
+                var doc = XDocument.Load(stream);
+                var channel = doc.Root?.Element("channel");
+                if (channel == null) return list;
 
-                if (root.TryGetProperty("items", out var items) && items.ValueKind == JsonValueKind.Array)
+                var source = channel.Element("title")?.Value;
+
+                foreach (var item in channel.Elements("item"))
                 {
-                    foreach (var item in items.EnumerateArray())
+                    try
                     {
-                        try
+                        var title = item.Element("title")?.Value ?? "";
+                        var summary = item.Element("description")?.Value ?? "";
+                        var link = item.Element("link")?.Value ?? item.Element("guid")?.Value ?? "";
+
+                        DateTime? pub = null;
+                        var pubText = item.Element("pubDate")?.Value;
+                        if (!string.IsNullOrWhiteSpace(pubText) &&
+                            DateTimeOffset.TryParse(pubText, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dto))
                         {
-                            var title = item.GetProperty("title").GetString() ?? "";
-                            var summary = item.TryGetProperty("description", out var d) ? d.GetString() ?? "" : "";
-                            var link = item.TryGetProperty("link", out var l) ? l.GetString() ?? "" : "";
-                            DateTime? pub = null;
-                            if (item.TryGetProperty("pubDate", out var p) && !string.IsNullOrWhiteSpace(p.GetString()))
-                            {
-                                if (DateTime.TryParse(p.GetString(), out var dt)) pub = dt.ToLocalTime();
-                            }
-
-                            // image: rss2json sometimes returns "thumbnail" or "enclosure" or inside description
-                            string? image = null;
-                            if (item.TryGetProperty("thumbnail", out var thumb) && thumb.ValueKind == JsonValueKind.String)
-                            {
-                                image = thumb.GetString();
-                            }
-                            else if (item.TryGetProperty("enclosure", out var enclosure) && enclosure.ValueKind == JsonValueKind.Object)
-                            {
-                                if (enclosure.TryGetProperty("link", out var encLink)) image = encLink.GetString();
-                                else if (enclosure.TryGetProperty("url", out var encUrl)) image = encUrl.GetString();
-                            }
-                            else if (item.TryGetProperty("media_thumbnail", out var mt) && mt.ValueKind == JsonValueKind.Object)
-                            {
-                                if (mt.TryGetProperty("url", out var mtUrl)) image = mtUrl.GetString();
-                            }
-                            else
-                            {
-                                // fallback: extract <img src=""> from description HTML
-                                var desc = summary ?? "";
-                                var imgMatch = Regex.Match(desc, "<img[^>]+src\\s*=\\s*['\\\"](?<src>[^'\\\"]+)['\\\"][^>]*>", RegexOptions.IgnoreCase);
-                                if (imgMatch.Success) image = imgMatch.Groups["src"].Value;
-                            }
-
-                            // Source: rss2json returns "feed" -> "title" sometimes
-                            string? source = null;
-                            if (root.TryGetProperty("feed", out var feed) && feed.ValueKind == JsonValueKind.Object)
-                            {
-                                if (feed.TryGetProperty("title", out var feedTitle) && feedTitle.ValueKind == JsonValueKind.String)
-                                    source = feedTitle.GetString();
-                            }
-
-                            var news = new NewsItem
-                            {
-                                Title = HtmlToPlainText(title),
-                                Summary = HtmlToPlainText(summary),
-                                Link = link,
-                                PublishDate = pub,
-                                ImageUrl = image,
-                                Source = source
-                            };
-                            list.Add(news);
+                            pub = dto.LocalDateTime;
                         }
-                        catch
+
+                        // Image: media:content, then enclosure, then <img> inside the description
+                        string? image = item.Element(Media + "content")?.Attribute("url")?.Value
+                                     ?? item.Element(Media + "thumbnail")?.Attribute("url")?.Value;
+
+                        var enclosure = item.Element("enclosure");
+                        if (image == null && enclosure != null &&
+                            (enclosure.Attribute("type")?.Value ?? "image").StartsWith("image", StringComparison.OrdinalIgnoreCase))
                         {
-                            // skip malformed item
+                            image = enclosure.Attribute("url")?.Value;
                         }
+
+                        if (image == null)
+                        {
+                            var imgMatch = Regex.Match(summary, "<img[^>]+src\\s*=\\s*['\\\"](?<src>[^'\\\"]+)['\\\"][^>]*>", RegexOptions.IgnoreCase);
+                            if (imgMatch.Success) image = imgMatch.Groups["src"].Value;
+                        }
+
+                        list.Add(new NewsItem
+                        {
+                            Title = HtmlToPlainText(title),
+                            Summary = HtmlToPlainText(summary),
+                            Link = link.Trim(),
+                            PublishDate = pub,
+                            ImageUrl = image,
+                            Source = source
+                        });
+                    }
+                    catch
+                    {
+                        // skip malformed item
                     }
                 }
             }

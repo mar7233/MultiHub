@@ -10,7 +10,11 @@ A cross-platform mobile app built with **.NET MAUI** that brings live exchange r
 
 ## Screenshots
 
-![Login screen](docs/screenshots/login.png)
+| Login | Exchange rates |
+|---|---|
+| ![Login screen](docs/screenshots/login.png) | ![Exchange rates](docs/screenshots/rates.png) |
+
+![News feed](docs/screenshots/news.png)
 
 ## Features
 
@@ -18,7 +22,7 @@ A cross-platform mobile app built with **.NET MAUI** that brings live exchange r
 |---|---|---|
 | 🔐 **Authentication** | Sign up, sign in and token refresh | Firebase Auth REST API |
 | 💱 **Exchange rates** (Kurlar) | Live exchange rates with color-coded daily change | Truncgil Finance API |
-| 📰 **News** (Haberler) | Headlines by category, with a detail page | TRT Haber RSS |
+| 📰 **News** (Haberler) | Headlines by category, with a detail page | TRT Haber RSS feeds, parsed directly |
 | 🌤️ **Weather** (Hava Durumu) | Current conditions and 5-day forecast by city | Turkish State Meteorological Service (MGM) |
 | ✅ **Tasks** (Yapılacaklar) | Add, edit and complete tasks | Firebase Realtime Database + local JSON |
 | ⚙️ **Settings** (Ayarlar) | Profile and theme | Local storage |
